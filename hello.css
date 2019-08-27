@@ -2,12 +2,27 @@
   width: 170px;
   height: 50px;
   color: white;
-  background-color: rgb(32, 32, 32);
+
+  background-color: rgb(39, 38, 38);
+  text-align: right;
 }
 .cal-btn {
   margin: 4px 4px 4px 0px;
   border-radius: 50px;
+  outline: none;
+  outline-color: none;
+
+  /* outline-style: none; */
 }
+.cal-btn:hover {
+  outline: none;
+  outline-color: none;
+  /* outline-style: none; */
+}
+/* .cal-btn:active,
+.cal-btn:focus {
+  -moz-outline-style: none;
+} */
 .clr {
   background-color: rgb(245, 191, 90);
 }
@@ -18,5 +33,5 @@
   margin-top: 100px;
   width: 200px;
   height: 270px;
-  background-color: rgb(54, 53, 53);
+  background-color: rgb(39, 38, 38);
 }

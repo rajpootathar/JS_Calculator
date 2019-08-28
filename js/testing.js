@@ -6,36 +6,56 @@ var int2_check = false;
 var again_calculate = 0;
 var again_operator = "";
 var check2 = false;
+var dot_check1 = false;
+var dot_check2 = false;
+var dot_int1 = 0;
+var dot_int2 = 0;
 var operator = "";
 var result = 0;
+var results = [];
+
 function set(value) {
   //   integer2 = null;
-  console.log(0);
-  value = parseInt(value);
+  // console.log(0);
+  value = parseFloat(value);
   console.log(typeof value);
   integer1 = parseFloat(integer1);
   //   value = parseInt(value);
   if (check2 == false) {
-    integer1 = integer1 * 10;
-    integer1 = integer1 + value;
-    integer1 = parseFloat(integer1);
-    // integer1 = integer1 + value;
-    // integer1 = parseFloat(integer1);
-    // integer1 = parseFloat(integer1);
-    console.log(integer1);
-    // console.log(typeof integer1);
-    // console.log(value);
-    document.getElementById("screen").innerHTML = integer1;
-    int1_check = true;
+    if (dot_check1 == true) {
+      dot_int1 = value / 10;
+      integer1 = integer1 + dot_int1;
+      document.getElementById("screen").innerHTML = integer1;
+      int1_check = true;
+    } else {
+      integer1 = integer1 * 10;
+      integer1 = integer1 + value;
+      integer1 = parseFloat(integer1);
+      // integer1 = integer1 + value;
+      // integer1 = parseFloat(integer1);
+      // integer1 = parseFloat(integer1);
+      console.log(integer1);
+      // console.log(typeof integer1);
+      // console.log(value);
+      document.getElementById("screen").innerHTML = integer1;
+      int1_check = true;
+    }
   } else {
-    integer2 = integer2 * 10;
-    integer2 = integer2 + value;
-    integer2 = parseFloat(integer2);
-    // document.getElementById("screen").innerHTML = "u inserted operator first";
-    console.log(integer2);
-    document.getElementById("screen").innerHTML = integer2;
-    check1 = true;
-    int2_check = true;
+    if (dot_check2 == true) {
+      dot_int2 = value / 10;
+      integer2 = integer2 + dot_int2;
+      document.getElementById("screen").innerHTML = integer2;
+      int1_check = true;
+    } else {
+      integer2 = integer2 * 10;
+      integer2 = integer2 + value;
+      integer2 = parseFloat(integer2);
+      // document.getElementById("screen").innerHTML = "u inserted operator first";
+      console.log(integer2);
+      document.getElementById("screen").innerHTML = integer2;
+      check1 = true;
+      int2_check = true;
+    }
   }
 }
 function opt(oprt) {
@@ -49,8 +69,15 @@ function opt(oprt) {
     calculate();
     operator = oprt;
   } else {
-    operator = oprt;
-    check2 = true;
+    if (oprt == "%") {
+      operator = oprt;
+      check2 = true;
+      // console.log("in oper");
+      calculate();
+    } else {
+      operator = oprt;
+      check2 = true;
+    }
   }
 }
 
@@ -63,21 +90,35 @@ function calculate() {
     switch (again_operator) {
       case "+":
         result = integer1 + again_calculate;
+        results.push(result);
         integer1 = result;
         document.getElementById("screen").innerHTML = result;
         break;
       case "-":
         result = integer1 - again_calculate;
+        results.push(result);
+
         integer1 = result;
         document.getElementById("screen").innerHTML = result;
         break;
       case "/":
         result = integer1 / again_calculate;
+        results.push(result);
+
         integer1 = result;
         document.getElementById("screen").innerHTML = result;
         break;
       case "*":
         result = integer1 * again_calculate;
+        results.push(result);
+
+        integer1 = result;
+        document.getElementById("screen").innerHTML = result;
+        break;
+      case "%":
+        result = integer1 / 100;
+        results.push(result);
+
         integer1 = result;
         document.getElementById("screen").innerHTML = result;
         break;
@@ -85,26 +126,45 @@ function calculate() {
   } else {
     switch (operator) {
       case "+":
-        if (int2_check == true) {
-          result = integer1 + integer2;
-          again_calculate = integer2;
-          integer2 = 0;
-          again_operator = operator;
-          operator = "";
-          int2_check = false;
-          integer1 = result;
-          document.getElementById("screen").innerHTML = result;
-          break;
-        } else if (int2_check == false) {
-          console.log("agya");
-          result = integer1 + again_calculate;
-          integer1 = result;
-          document.getElementById("screen").innerHTML = result;
-          break;
-        }
+        // console.log("andar");
+        // if (int2_check == true) {
+        result = integer1 + integer2;
+        results.push(result);
+
+        again_calculate = integer2;
+        integer2 = 0;
+        again_operator = operator;
+        operator = "";
+        int2_check = false;
+        integer1 = result;
+        document.getElementById("screen").innerHTML = result;
+        break;
+      // } else if (int2_check == false) {
+      //   console.log("agya");
+      //   result = integer1 + again_calculate;
+      //   integer1 = result;
+      //   document.getElementById("screen").innerHTML = result;
+      //   break;
+      // }
       case "-":
         result = integer1 - integer2;
+        results.push(result);
+
         again_calculate = integer2;
+        integer2 = 0;
+        again_operator = operator;
+        operator = "";
+        int2_check = false;
+        integer1 = result;
+        document.getElementById("screen").innerHTML = result;
+
+        break;
+      case "%":
+        console.log("andar");
+        result = integer1 / 100;
+        results.push(result);
+
+        // again_calculate = integer2;
         integer2 = 0;
         again_operator = operator;
         operator = "";
@@ -131,6 +191,8 @@ function calculate() {
         // }
         else {
           result = integer1 * integer2;
+          results.push(result);
+
           again_calculate = integer2;
           integer2 = 0;
           again_operator = operator;
@@ -152,6 +214,8 @@ function calculate() {
               "you tried to divide by zero";
             break;
           } else {
+            results.push(result);
+
             again_calculate = integer2;
             integer2 = 0;
             again_operator = operator;
@@ -174,9 +238,61 @@ function remove() {
   check2 = false;
   int2_check = false;
   int1_check = false;
+  dot_check1 = false;
+  dot_check2 = false;
+  dot_int1 = 0;
+  dot_int2 = 0;
   again_operator = "";
   again_calculate = 0;
   operator = "";
   result = 0;
+  results = [];
+
   document.getElementById("screen").innerHTML = "";
+}
+function changeColor(_this, case1, case2, case3, case4) {
+  _this.style.backgroundColor = "white";
+  _this.style.color = "rgb(248, 180, 53)";
+
+  document.getElementById(case1).style.backgroundColor = "rgb(248, 180, 53)";
+  document.getElementById(case1).style.color = "white";
+
+  document.getElementById(case2).style.backgroundColor = "rgb(248, 180, 53)";
+  document.getElementById(case2).style.color = "white";
+
+  document.getElementById(case3).style.backgroundColor = "rgb(248, 180, 53)";
+  document.getElementById(case3).style.color = "white";
+
+  document.getElementById(case4).style.backgroundColor = "rgb(248, 180, 53)";
+  document.getElementById(case4).style.color = "white";
+}
+
+function sign() {
+  if (int1_check == false) {
+    document.getElementById("screen").innerHTML = 0;
+  } else {
+    integer1 = integer1 * -1;
+    document.getElementById("screen").innerHTML = integer1;
+  }
+}
+
+function dot() {
+  if (dot_check1 == false) {
+    dot_check1 = true;
+  } else if (dot_check2 == false) {
+    dot_check2 = true;
+  } else {
+    document.getElementById("screen").innerHTML = "no double dots allowed";
+  }
+  // integer1 = String(integer1);
+  // integer1 = integer1 + ".0";
+  // console.log(integer1);
+  // console.log(typeof integer1);
+  // integer1 = parseFloat(integer1);
+  // console.log(integer1);
+  // console.log(typeof integer1);
+}
+
+function storage() {
+  document.getElementById("screen").innerHTML = results;
 }

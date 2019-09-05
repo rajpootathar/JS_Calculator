@@ -13,6 +13,7 @@ var dot_int2 = 0;
 var int1_neg = false;
 var int2_neg = false;
 var operator = "";
+var check_screen = 100000000;
 var int1_dot_divide = 10;
 var int2_dot_divide = 10;
 var result = 0;
@@ -21,66 +22,77 @@ var results = [];
 function set(value) {
   //   integer2 = null;
   // console.log(0);
+
   value = parseFloat(value);
   console.log(typeof value);
   integer1 = parseFloat(integer1);
   //   value = parseInt(value);
   if (check2 == false) {
-    if (dot_check1 == true) {
-      dot_int1 = value / int1_dot_divide;
-      if (int1_neg === true) {
-        console.log("there");
-        integer1 = integer1 - dot_int1;
+    var check = integer1 / check_screen;
+    if (check <= 9) {
+      if (dot_check1 == true) {
+        dot_int1 = value / int1_dot_divide;
+        if (int1_neg === true) {
+          console.log("there");
+          integer1 = integer1 - dot_int1;
+        } else {
+          integer1 = integer1 + dot_int1;
+        }
+        int1_dot_divide = int1_dot_divide * 10;
+        document.getElementById("screen").append(value);
+        console.log(integer1);
+        int1_check = true;
       } else {
-        integer1 = integer1 + dot_int1;
-      }
-      int1_dot_divide = int1_dot_divide * 10;
-      document.getElementById("screen").append(value);
-      console.log(integer1);
-      int1_check = true;
-    } else {
-      integer1 = integer1 * 10;
-      if (int1_neg === true) {
-        integer1 = integer1 - value;
-      } else {
-        integer1 = integer1 + value;
-      }
+        integer1 = integer1 * 10;
+        if (int1_neg === true) {
+          integer1 = integer1 - value;
+        } else {
+          integer1 = integer1 + value;
+        }
 
-      integer1 = parseFloat(integer1);
-      // integer1 = integer1 + value;
-      // integer1 = parseFloat(integer1);
-      // integer1 = parseFloat(integer1);
-      console.log(integer1);
-      // console.log(typeof integer1);
-      // console.log(value);
+        integer1 = parseFloat(integer1);
+        // integer1 = integer1 + value;
+        // integer1 = parseFloat(integer1);
+        // integer1 = parseFloat(integer1);
+        console.log(integer1);
+        // console.log(typeof integer1);
+        // console.log(value);
+        document.getElementById("screen").innerHTML = integer1;
+        int1_check = true;
+      }
+    } else {
       document.getElementById("screen").innerHTML = integer1;
-      int1_check = true;
     }
   } else {
-    if (dot_check2 == true) {
-      dot_int2 = value / 10;
-      if (int2_neg === true) {
-        integer2 = integer2 - dot_int2;
-      } else {
-        integer2 = integer2 + dot_int2;
-      }
+    var check = integer1 / check_screen;
+    if (check <= 9) {
+      if (dot_check2 == true) {
+        dot_int2 = value / 10;
+        if (int2_neg === true) {
+          integer2 = integer2 - dot_int2;
+        } else {
+          integer2 = integer2 + dot_int2;
+        }
 
-      document.getElementById("screen").innerHTML = integer2;
-      int2_check = true;
+        document.getElementById("screen").innerHTML = integer2;
+        int2_check = true;
+      } else {
+        integer2 = integer2 * 10;
+        if (int2_neg === true) {
+          integer2 = integer2 - value;
+        } else {
+          integer2 = integer2 + value;
+        }
+
+        integer2 = parseFloat(integer2);
+        // document.getElementById("screen").innerHTML = "u inserted operator first";
+        console.log(integer2);
+        document.getElementById("screen").innerHTML = integer2;
+        check1 = true;
+        int2_check = true;
+      }
     } else {
-      integer2 = integer2 * 10;
-      if (int2_neg === true) {
-        integer2 = integer2 - value;
-      } else {
-        integer2 = integer2 + value;
-      }
-
-      integer2 = parseFloat(integer2);
-      // document.getElementById("screen").innerHTML = "u inserted operator first";
-      console.log(integer2);
       document.getElementById("screen").innerHTML = integer2;
-      check1 = true;
-      int2_check = true;
     }
   }
 }
@@ -116,7 +128,7 @@ function calculate() {
   if (int1_check == true && int2_check == false && again_operator != "") {
     switch (again_operator) {
       case "+":
-        console.log("lo g");
+        // console.log("lo g");
         result = integer1 + again_calculate;
         results.push(result);
         integer1 = result;

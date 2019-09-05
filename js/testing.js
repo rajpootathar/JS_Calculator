@@ -10,7 +10,11 @@ var dot_check1 = false;
 var dot_check2 = false;
 var dot_int1 = 0;
 var dot_int2 = 0;
+var int1_neg = false;
+var int2_neg = false;
 var operator = "";
+var int1_dot_divide = 10;
+var int2_dot_divide = 10;
 var result = 0;
 var results = [];
 
@@ -23,13 +27,25 @@ function set(value) {
   //   value = parseInt(value);
   if (check2 == false) {
     if (dot_check1 == true) {
-      dot_int1 = value / 10;
-      integer1 = integer1 + dot_int1;
-      document.getElementById("screen").innerHTML = integer1;
+      dot_int1 = value / int1_dot_divide;
+      if (int1_neg === true) {
+        console.log("there");
+        integer1 = integer1 - dot_int1;
+      } else {
+        integer1 = integer1 + dot_int1;
+      }
+      int1_dot_divide = int1_dot_divide * 10;
+      document.getElementById("screen").append(value);
+      console.log(integer1);
       int1_check = true;
     } else {
       integer1 = integer1 * 10;
-      integer1 = integer1 + value;
+      if (int1_neg === true) {
+        integer1 = integer1 - value;
+      } else {
+        integer1 = integer1 + value;
+      }
+
       integer1 = parseFloat(integer1);
       // integer1 = integer1 + value;
       // integer1 = parseFloat(integer1);
@@ -43,12 +59,22 @@ function set(value) {
   } else {
     if (dot_check2 == true) {
       dot_int2 = value / 10;
-      integer2 = integer2 + dot_int2;
+      if (int2_neg === true) {
+        integer2 = integer2 - dot_int2;
+      } else {
+        integer2 = integer2 + dot_int2;
+      }
+
       document.getElementById("screen").innerHTML = integer2;
-      int1_check = true;
+      int2_check = true;
     } else {
       integer2 = integer2 * 10;
-      integer2 = integer2 + value;
+      if (int2_neg === true) {
+        integer2 = integer2 - value;
+      } else {
+        integer2 = integer2 + value;
+      }
+
       integer2 = parseFloat(integer2);
       // document.getElementById("screen").innerHTML = "u inserted operator first";
       console.log(integer2);
@@ -59,22 +85,23 @@ function set(value) {
   }
 }
 function opt(oprt) {
-  if (int1_check == false && check2 == false) {
+  if (int1_check === false && check === false) {
     document.getElementById("screen").innerHTML = "enter value first";
   } else if (operator != "" && check2 == false) {
-    integer2 = 0;
-    calculate();
+    // integer2 = 0;
+    // calculate();
     operator = oprt;
-  } else if (operator != "") {
+  } else if (int1_check === true && int2_check === true && operator !== "") {
     calculate();
     operator = oprt;
   } else {
-    if (oprt == "%") {
+    if (oprt === "%") {
       operator = oprt;
       check2 = true;
       // console.log("in oper");
       calculate();
     } else {
+      console.log("in oper");
       operator = oprt;
       check2 = true;
     }
@@ -89,6 +116,7 @@ function calculate() {
   if (int1_check == true && int2_check == false && again_operator != "") {
     switch (again_operator) {
       case "+":
+        console.log("lo g");
         result = integer1 + again_calculate;
         results.push(result);
         integer1 = result;
@@ -120,6 +148,51 @@ function calculate() {
         results.push(result);
 
         integer1 = result;
+        document.getElementById("screen").innerHTML = result;
+        break;
+    }
+  } else if (int2_check === false && operator !== "") {
+    console.log(operator);
+    switch (operator) {
+      case "+":
+        // console.log("m there");
+        // integer1 = parseFloat(integer1);
+        result = 0;
+        result = integer1 + integer1;
+        results.push(result);
+        again_calculate = integer1;
+        integer1 = result;
+        again_operator = operator;
+        document.getElementById("screen").innerHTML = result;
+        break;
+      case "-":
+        result = integer1 - integer1;
+        results.push(result);
+        again_calculate = integer1;
+        integer1 = result;
+        again_operator = operator;
+        document.getElementById("screen").innerHTML = result;
+        break;
+      case "*":
+        // console.log("in *****");
+        result = 0;
+        result = integer1 * integer1;
+
+        console.log(result);
+        results.push(result);
+        again_calculate = integer1;
+        integer1 = result;
+        again_operator = operator;
+        operator = "";
+        document.getElementById("screen").innerHTML = result;
+        // document.getElementById("screen").innerHTML = integer1;
+        break;
+      case "/":
+        result = integer1 / integer1;
+        results.push(result);
+        again_calculate = integer1;
+        integer1 = result;
+        again_operator = operator;
         document.getElementById("screen").innerHTML = result;
         break;
     }
@@ -240,17 +313,29 @@ function remove() {
   int1_check = false;
   dot_check1 = false;
   dot_check2 = false;
+  int1_neg = false;
+  int2_neg = false;
   dot_int1 = 0;
   dot_int2 = 0;
   again_operator = "";
+  int1_dot_divide = 10;
+  int2_dot_divide = 10;
   again_calculate = 0;
   operator = "";
   result = 0;
   results = [];
+  document.getElementById("case1").style.backgroundColor = "rgb(248, 180, 53)";
+  document.getElementById("case1").style.color = "white";
+  document.getElementById("case2").style.backgroundColor = "rgb(248, 180, 53)";
+  document.getElementById("case2").style.color = "white";
+  document.getElementById("case3").style.backgroundColor = "rgb(248, 180, 53)";
+  document.getElementById("case3").style.color = "white";
+  document.getElementById("case4").style.backgroundColor = "rgb(248, 180, 53)";
+  document.getElementById("case4").style.color = "white";
 
   document.getElementById("screen").innerHTML = "";
 }
-function changeColor(_this, case1, case2, case3, case4) {
+function changeColor(_this, case1, case2, case3) {
   _this.style.backgroundColor = "white";
   _this.style.color = "rgb(248, 180, 53)";
 
@@ -262,28 +347,35 @@ function changeColor(_this, case1, case2, case3, case4) {
 
   document.getElementById(case3).style.backgroundColor = "rgb(248, 180, 53)";
   document.getElementById(case3).style.color = "white";
-
-  document.getElementById(case4).style.backgroundColor = "rgb(248, 180, 53)";
-  document.getElementById(case4).style.color = "white";
 }
 
 function sign() {
-  if (int1_check == false) {
-    document.getElementById("screen").innerHTML = 0;
-  } else {
+  if (int1_check === true && int2_check === false) {
+    int1_neg = !int1_neg;
     integer1 = integer1 * -1;
     document.getElementById("screen").innerHTML = integer1;
+  } else {
+    // integer1 = integer1 * -1;
+    int2_neg = !int2_neg;
+    integer2 = integer2 * -1;
+    document.getElementById("screen").innerHTML = integer2;
   }
 }
 
 function dot() {
-  if (dot_check1 == false) {
+  if (dot_check1 === false && int2_check === false) {
     dot_check1 = true;
-  } else if (dot_check2 == false) {
+    console.log("in dot 1");
+    document.getElementById("screen").innerHTML = integer1 + ".";
+  } else if (dot_check2 == false && int2_check === true) {
     dot_check2 = true;
-  } else {
-    document.getElementById("screen").innerHTML = "no double dots allowed";
+    console.log("in dot 2");
+    document.getElementById("screen").innerHTML = integer2 + ".";
   }
+  // else {
+  //   document.getElementById("screen").innerHTML = "no double dots allowed";
+  // }
+
   // integer1 = String(integer1);
   // integer1 = integer1 + ".0";
   // console.log(integer1);

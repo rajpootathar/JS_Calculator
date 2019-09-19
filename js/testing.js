@@ -207,6 +207,14 @@ function calculate() {
         again_operator = operator;
         document.getElementById("screen").innerHTML = result;
         break;
+      case "%":
+        result = integer1 / 100;
+        results.push(result);
+        again_calculate = integer1;
+        integer1 = result;
+        again_operator = operator;
+        document.getElementById("screen").innerHTML = result;
+        break;
     }
   } else {
     switch (operator) {
